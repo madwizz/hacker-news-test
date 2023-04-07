@@ -7,4 +7,13 @@ export interface Story {
   score: number;
   text: string;
   kids: number[];
+  descendants: number;
+}
+
+export interface Comment {
+  id: number;
+  by: string;
+  time: number;
+  text: string;
+  kids: number[];
 }

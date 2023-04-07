@@ -1,56 +1,121 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { Box, Button, CircularProgress, Link, Typography } from '@mui/material';
+import { getStory, getComments } from '../../api';
+import { Story, Comment } from '../../types';
+import CommentSection from '../CommentSection/CommentSection';
 
-import { CircularProgress, Typography } from '@mui/material';
+interface StoryPageProps {
+  id: string;
+  getShortenedUrl: (url: string) => string;
+  [key: string]: any;
+}
 
-import { Story } from '../../types';
-
-const StoryPage = () => {
-  const { id } = useParams<{ id: string }>();
+const StoryPage = ({ getShortenedUrl }: StoryPageProps) => {
+  const { id } = useParams<StoryPageProps>();
   const [story, setStory] = useState<Story | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [refreshComments, setRefreshComments] = useState<boolean>(false);
+  const [isLoadingStory, setIsLoadingStory] = useState<boolean>(true);
+  const [isLoadingComments, setIsLoadingComments] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchStory = async () => {
-      const response = await axios.get<Story>(`https://hacker-news.firebaseio.com/v0/item/${id}.json`);
-      setStory(response.data);
-    };
+    if (id) {
+      setIsLoadingStory(true);
+      setIsLoadingComments(true);
+      getStory(parseInt(id)).then((data) => {
+        setStory(data);
+        setIsLoadingStory(false);
+      });
+      getComments(parseInt(id)).then((data) => {
+        setComments(data);
+        setIsLoadingComments(false);
+      });
+    }
+  }, [id, refreshComments]);
 
-    fetchStory();
-  }, [id]);
-
-  if (!story) {
-    return <CircularProgress />;
-  }
+  const handleRefreshComments = () => {
+    setRefreshComments((prevState) => !prevState);
+  };
 
   return (
-    <div>
-      <Typography variant="h4" component="h1">
-        {story.title}
-      </Typography>
-      <Typography variant="subtitle1" color="textSecondary">
-        by {story.by} on {new Date(story.time * 1000).toLocaleString()}
-      </Typography>
-      <Typography variant="subtitle2" color="textSecondary">
-        {story.score} points
-      </Typography>
-      {story.text && <Typography variant="body1">{story.text}</Typography>}
-      {story.url && (
-        <Typography variant="body1">
-          <a href={story.url} target="_blank" rel="noreferrer">
-            {story.url}
-          </a>
-        </Typography>
+    <Box sx={{ margin: '1rem' }}>
+      {isLoadingStory ? (
+        <CircularProgress />
+      ) : (
+        <>
+          {story && (
+            <Box sx={{ marginBottom: '2rem' }}>
+
+
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography variant="h4" sx={{ marginBottom: '1rem' }}>
+                  {story.title}
+                </Typography>                
+                <Button 
+                  variant="outlined" 
+                  onClick={() => window.location.reload()}>
+                    Refresh Comments
+                </Button>
+              </Box>
+
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '10px' , py: 1 }}>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {`by ${story.by}`}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {`on ${new Date(story.time * 1000).toLocaleString()}`}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                      {`${story.score} rating`}
+                    </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {`${story.descendants ?? 0} comments`}
+                  </Typography>
+
+                </Box>
+
+
+              {story.url && (
+                <a 
+                  href={story.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none' }}
+                                    >
+                    <Typography 
+                      variant="caption" 
+                      sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' }, cursor: 'pointer', fontSize: 'inherit' }}
+                      >
+                      ({getShortenedUrl(story.url)})
+                    </Typography>
+                </a>
+              )}
+            </Box>
+          )}
+          {isLoadingComments ? (
+            <CircularProgress />
+          ) : (
+            <>
+              {comments && comments.length > 0 ? (
+                <>
+                  <CommentSection
+                    commentIds={comments.map((comment) => comment.id)}
+                    refreshComments={refreshComments}
+                    handleRefreshComments={handleRefreshComments}
+                  />
+                </>
+              ) : (
+                <Typography variant="body1" sx={{ marginBottom: '1rem' }}>
+                  No comments yet
+                </Typography>
+              )}
+            </>
+          )}
+        </>
       )}
-      {story.kids?.length > 0 && (
-        <Typography variant="subtitle1" component="h2" sx={{ mt: 2 }}>
-          Comments:
-        </Typography>
-      )}
-    </div>
+    </Box>
   );
 };
 
 export default StoryPage;
-
-
