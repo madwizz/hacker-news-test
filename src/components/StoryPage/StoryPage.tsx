@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Button, CircularProgress, Link, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { getStory, getComments } from '../../api';
 import { Story, Comment } from '../../types';
 import CommentSection from '../CommentSection/CommentSection';
+
+import Header from '../Header/Header'
 
 interface StoryPageProps {
   id: string;
@@ -46,17 +48,11 @@ const StoryPage = ({ getShortenedUrl }: StoryPageProps) => {
         <>
           {story && (
             <Box sx={{ marginBottom: '2rem' }}>
-
-
+              <Header isHomePage={false} onRefreshClick={handleRefreshComments}/>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography variant="h4" sx={{ marginBottom: '1rem' }}>
                   {story.title}
-                </Typography>                
-                <Button 
-                  variant="outlined" 
-                  onClick={() => window.location.reload()}>
-                    Refresh Comments
-                </Button>
+                </Typography>
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '10px' , py: 1 }}>
@@ -101,8 +97,8 @@ const StoryPage = ({ getShortenedUrl }: StoryPageProps) => {
                 <>
                   <CommentSection
                     commentIds={comments.map((comment) => comment.id)}
-                    refreshComments={refreshComments}
                     handleRefreshComments={handleRefreshComments}
+                    refreshComments={refreshComments}
                   />
                 </>
               ) : (

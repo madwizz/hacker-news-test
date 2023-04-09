@@ -5,9 +5,11 @@ import { Comment } from '../../types';
 
 interface CommentSectionProps {
   commentIds: number[];
+  handleRefreshComments: () => void;
+  refreshComments: boolean;
 }
 
-const CommentSection = ({ commentIds }: CommentSectionProps) => {
+const CommentSection = ({ commentIds, refreshComments, handleRefreshComments }: CommentSectionProps) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [expandedComments, setExpandedComments] = useState<number[]>([]);
@@ -41,11 +43,11 @@ const CommentSection = ({ commentIds }: CommentSectionProps) => {
     const isExpanded = expandedComments.includes(comment.id);
 
     return (
-      <Box key={comment.id} sx={{ pl: depth * 2, pt: 2, pb: 1, backgroundColor: '#f4f4f4', py: 2, marginBottom: '10px', padding: '5px' }}>
-        <Typography variant="body1" dangerouslySetInnerHTML={{ __html: comment.text }} />
-        <Typography variant="subtitle1" color="text.secondary" sx={{ mt: 1, fontSize: '12px' }}>
+      <Box key={comment.id} sx={{ pl: depth * 2, pt: 2, pb: 1, backgroundColor: '#f4f4f4', py: 2, marginBottom: '10px', padding: '5px', borderRadius: '10px' }}>
+        <Typography variant="subtitle1" color="text.secondary" sx={{ fontSize: '12px' }}>
           by {comment.by} on {new Date(comment.time * 1000).toLocaleString()}
         </Typography>
+        <Typography variant="body1" dangerouslySetInnerHTML={{ __html: comment.text }} />
         {hasChildren && (
           <>
             <Button variant="outlined" onClick={() => handleExpandClick(comment.id)} sx={{ mt: 1, fontSize: '10px' }}>
@@ -53,7 +55,11 @@ const CommentSection = ({ commentIds }: CommentSectionProps) => {
             </Button>
             {isExpanded && (
               <Box sx={{ pl: 2 }}>
-                <CommentSection commentIds={comment.kids} />
+                <CommentSection 
+                  commentIds={comment.kids}
+                  refreshComments={refreshComments}
+                  handleRefreshComments={handleRefreshComments} 
+                />
               </Box>
             )}
           </>

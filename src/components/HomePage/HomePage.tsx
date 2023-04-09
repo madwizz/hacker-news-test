@@ -1,37 +1,40 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button, CircularProgress, List, ListItem, Typography } from '@mui/material';
+import { Box, CircularProgress, List, ListItem, Typography } from '@mui/material';
 import { Story } from '../../types';
 import { getNewStories } from '../../api';
+
+import Header from '../Header/Header';
 
 const HomePage = ({ getShortenedUrl }: { getShortenedUrl: (urlString: string) => string }) => {
   const [stories, setStories] = useState<Story[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const refreshStories = async () => {
+    setIsLoading(true);
+    const data = await getNewStories();
+    setStories(data);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    getNewStories().then((data: Story[]) => {
-      setStories(data);
-      setIsLoading(false);
-    });
+    refreshStories();
   }, []);
 
   return (
     <Box sx={{ margin: '1rem' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="h4">Hacker News</Typography>
-        <Button variant="outlined" onClick={() => window.location.reload()}>Refresh News</Button>
-      </Box>
+      <Header isHomePage={true} onRefreshClick={refreshStories}/>
       {isLoading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: '2rem', cursor: 'pointer' }}>
           <CircularProgress />
         </Box>
       ) : (
-        <List sx={{ width: '100%', bgcolor: 'background.paper', marginTop: '1rem' }}>
+        <List sx={{ width: '100%', bgcolor: 'background.paper', marginTop: '1rem', pt: '20px' }}>
           {stories.map((story) => (
             <ListItem 
               key={story.id} 
               disablePadding 
-              sx={{ backgroundColor: '#f4f4f4', padding: '10px', mb: '10px' }}
+              sx={{ backgroundColor: '#f4f4f4', padding: '10px', mb: '10px', borderRadius: '20px' }}
             >
               {/* '&:hover': { backgroundColor: '#f4f4f4' } */}
               <Box sx={{ width: '100%' }}>
