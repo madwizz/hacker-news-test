@@ -3,7 +3,7 @@
 ### new ui for a hacker news api
 
 ### how to start:
-cd /directorr/
+cd hacker-news-test
 npm i vite
 npm install
 npm run dev
