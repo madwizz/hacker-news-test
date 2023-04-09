@@ -1,7 +1,6 @@
-﻿# hacker-news-test
+### hacker-news-test
 
-new ui for a hacker news api
+# new ui for a hacker news api
 
-how to start
-
+# how to start
 npm install
