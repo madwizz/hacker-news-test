@@ -8,7 +8,6 @@ import CommentSection from '../CommentSection/CommentSection';
 import Header from '../Header/Header'
 
 interface StoryPageProps {
-  id: string;
   getShortenedUrl: (url: string) => string;
   [key: string]: any;
 }

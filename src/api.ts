@@ -3,7 +3,7 @@ import { Comment, Story } from './types';
 
 export const getNewStories = async (): Promise<Story[]> => {
   const response: AxiosResponse<number[]> = await axios.get('https://hacker-news.firebaseio.com/v0/newstories.json');
-  const storyIds: number[] = response.data.slice(0, 50);
+  const storyIds: number[] = response.data.slice(0, 100);
   const storyRequests: Promise<AxiosResponse<Story, any>>[] = storyIds.map((id) =>
     axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
   );
