@@ -3,12 +3,11 @@
 ### new ui for a hacker news api
 
 ### how to start:
-cd hacker-news-test
-npm i vite
-npm install
-npm run dev
+- cd hacker-news-test
+- npm install
+- npm run build
+- npm run dev / npm run preview; it will launch locally on http://127.0.0.1:3000/
 
-http://127.0.0.1:3000/
 
 Главная страница
 - [x] Показывает последние 100 новостей в виде списка, отсортированного по дате, самые свежие сверху
