@@ -8,28 +8,28 @@
 - npm run build
 - npm run dev / npm run preview; it will launch locally on http://127.0.0.1:3000/
 
+### Main Page
 
-Главная страница
-- [x] Показывает последние 100 новостей в виде списка, отсортированного по дате, самые свежие сверху
-- [x] Каждая новость содержит: название, рейтинг, ник автора, дату публикации
-- [ ] По клику на новость происходит переход на страницу новости (В данном задании я решил что клик по заголовку новости будет отправлять на страницу с комментариями к этой новости, взамен этого добавлена ссылка под заголовком)
-- [x] Список новостей должен автоматически обновляться раз в минуту без участия пользователя
-- [x] На странице должна быть кнопка для принудительного обновления списка новостей
+- [x] Displays the last 100 news in a list sorted by date, with the most recent at the top.
+- [x] Each news item includes: title, rating, author's nickname, and publication date.
+- [ ]Clicking on a news item takes you to the news page (For this task, I've decided that clicking on the news headline will take you to the page with comments on that news, instead there's a link below the headline).
+- [x] The news list should automatically update every minute without user intervention.
+- [x] There should be a button on the page to forcibly update the news list.
+      
+### News Page
 
-Страница новости
-- [x] Должна содержать: ссылку на новость, заголовок новости, дату, автора, счётчик количества комментариев, список комментариев в виде дерева
-- [x] Корневые комментарии подгружаются сразу же при входе на страницу, вложенные - по клику на корневой
-- [x] На странице должна быть кнопка для принудительного обновления списка комментариев
-- [x] На странице должна быть кнопка для возврата к списку новостей
+- [x] Should contain: a link to the news, news headline, date, author, a counter of the number of comments, and a list of comments in tree form.
+- [x] Root comments should be loaded immediately upon entering the page; nested ones should load upon clicking on a root comment.
+- [x] There should be a button on the page to forcibly update the comments list.
+- [x] There should be a button on the page to return to the news list.
+- [x] Technical Requirements
 
-
-Технические требования
-- [x] Приложение разработано с использованием React 
-- [x] Использование TypeScript
-- [x] Использован официальный API Hacker News. (https://github.com/HackerNews/API) Вызовы Hacker News API и обработка данных от него производятся напрямую с фронтенда
-- [x] Роутинг выполнен с использованием React Router V6 (https://reactrouter.com/en/main)
-- [x] Фреймворк UI любой на ваше усмотрение (как пример MUI). (https://mui.com/)
-- [ ] Можно и на чистом css, главное, чтобы было красиво
-- [x] Приложение должно запускаться по адресу localhost:3000 (http://127.0.0.1:3000/)
-- [x] При переходах по ссылкам страница не перезагружается
-- [x] Исходный код решения должен быть выложен с вашего аккаунта на Github (https://github.com/madwizz/hacker-news-test) с Readme файлом с инструкцией по запуску
+- [x] The application is developed using React.
+- [x] Usage of TypeScript.
+- [x] Uses the official Hacker News API. (https://github.com/HackerNews/API) Calls to the Hacker News API and data processing from it are made directly from the frontend.
+- [x] Routing is done using React Router V6 (https://reactrouter.com/en/main)
+- [x] Any UI framework is acceptable (for example, MUI). (https://mui.com/)
+- [ ]Pure CSS is also acceptable, the main thing is that it should look nice.
+- [x] The application should run at http://localhost:3000 (http://127.0.0.1:3000/)
+- [x] Page doesn't reload when navigating through links.
+- [x] The source code for the solution should be uploaded from your account on Github (https://github.com/madwizz/hacker-news-test) with a Readme file containing instructions for launching.
